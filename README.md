@@ -9,7 +9,7 @@
 
 > 一个专注效率的跨平台桌面应用，集成番茄工作法、任务管理和时间追踪功能
 
-![icon1](assets/icon/呀土豆.jpg){width=50%,height=50%}
+![icon1](assets/icon/呀土豆.jpg)
 
 ## 🌟 核心功能
 
