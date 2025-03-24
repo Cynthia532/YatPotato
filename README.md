@@ -3,6 +3,9 @@
 [![Electron Version](https://img.shields.io/badge/Electron-24.0-blue)](https://www.electronjs.org/)
 [![React Version](https://img.shields.io/badge/React-18.2-blue)](https://react.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Code Size](https://img.shields.io/github/languages/code-size/ouyangyipeng/Yat-Search-Engine)](https://github.com/ouyangyipeng/Yat-Search-Engine)
+[![Top Language](https://img.shields.io/github/languages/top/ouyangyipeng/Yat-Search-Engine)](https://github.com/ouyangyipeng/Yat-Search-Engine)
+[![Last Commit](https://img.shields.io/github/last-commit/ouyangyipeng/Yat-Search-Engine)](https://github.com/ouyangyipeng/Yat-Search-Engine/commits/main)
 
 > 一个专注效率的跨平台桌面应用，集成番茄工作法、任务管理和时间追踪功能
 
