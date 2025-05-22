@@ -87,71 +87,84 @@ npm run package:linux
 
 ```plaintext
 YatPotato/
-├── electron/
-│   ├── main.js            # 主进程入口
-│   ├── preload.js         # 预加载脚本
+├── electron/                  # Electron 主进程代码
+│   ├── main.ts                # 主进程入口 (TypeScript)
+│   ├── preload.ts             # 预加载脚本 (TypeScript)
 │   ├── services/
-│   │   ├── TimerService.js  # 计时器服务
-│   │   ├── DatabaseService.js # 数据库服务
-│   │   └── WindowManager.js  # 窗口管理
-├── src/
+│   │   ├── TimerService.ts    # 计时器服务
+│   │   ├── DatabaseService.ts # 数据库服务
+│   │   └── WindowManager.ts   # 窗口管理
+│   └── types/                # Electron 相关类型定义
+│       └── electron.d.ts      # 扩展 Electron 类型
+│
+├── src/                       # 渲染进程代码 (React + TypeScript)
 │   ├── core/
 │   │   ├── app/
-│   │   │   ├── config.js    # 应用配置
-│   │   │   └── constants.js # 常量定义
+│   │   │   ├── config.ts     # 应用配置
+│   │   │   └── constants.ts  # 常量定义
 │   │   └── utils/
-│   │       ├── timeFormatter.js # 时间格式化工具
-│   │       └── notification.js  # 通知工具
+│   │       ├── timeFormatter.ts # 时间格式化工具
+│   │       └── notification.ts  # 通知工具
 │   ├── components/
 │   │   ├── common/
 │   │   │   ├── Button/
-│   │   │   │   ├── index.jsx
+│   │   │   │   ├── index.tsx
 │   │   │   │   └── styles.module.css
 │   │   │   └── ProgressRing/
-│   │   │       ├── index.jsx
+│   │   │       ├── index.tsx
 │   │   │       └── styles.module.css
 │   │   └── layout/
-│   │       ├── Sidebar.jsx
-│   │       └── MainLayout.jsx
+│   │       ├── Sidebar.tsx
+│   │       └── MainLayout.tsx
 │   ├── modules/
 │   │   ├── pomodoro/
 │   │   │   ├── components/
-│   │   │   │   ├── TimerDisplay.jsx
-│   │   │   │   └── ControlPanel.jsx
+│   │   │   │   ├── TimerDisplay.tsx
+│   │   │   │   └── ControlPanel.tsx
 │   │   │   ├── hooks/
-│   │   │   │   └── useTimer.js
-│   │   │   └── index.jsx
+│   │   │   │   └── useTimer.ts
+│   │   │   ├── types.ts      # 模块特定类型
+│   │   │   └── index.tsx
 │   │   ├── todo/
 │   │   │   ├── components/
-│   │   │   │   ├── TodoItem.jsx
-│   │   │   │   └── AddTodoForm.jsx
+│   │   │   │   ├── TodoItem.tsx
+│   │   │   │   └── AddTodoForm.tsx
 │   │   │   ├── hooks/
-│   │   │   │   └── useTodos.js
-│   │   │   └── index.jsx
+│   │   │   │   └── useTodos.ts
+│   │   │   ├── types.ts
+│   │   │   └── index.tsx
 │   │   └── analytics/
 │   │       ├── charts/
-│   │       │   └── ProductivityChart.jsx
+│   │       │   └── ProductivityChart.tsx
 │   │       ├── hooks/
-│   │       │   └── useAnalytics.js
-│   │       └── index.jsx
+│   │       │   └── useAnalytics.ts
+│   │       ├── types.ts
+│   │       └── index.tsx
 │   ├── services/
-│   │   ├── database.js     # 数据库操作封装
+│   │   ├── database.ts       # 数据库操作封装
 │   │   └── api/
-│   │       └── timerAPI.js # 计时器接口
+│   │       ├── timerAPI.ts    # 计时器接口
+│   │       └── types.ts      # API 相关类型
 │   ├── styles/
-│   │   ├── global.css      # 全局样式
-│   │   ├── theme.css       # 主题变量（CSS Variables）
-│   │   └── mixins.css      # 通用样式类
+│   │   ├── global.css         # 全局样式
+│   │   ├── theme.css          # 主题变量 (CSS Variables)
+│   │   └── mixins.css         # 通用样式类
 │   ├── common/
-│   │   ├── eventBus.js     # 事件总线
-│   │   └── GlobalState.jsx # 全局状态上下文
-│   ├── router/            # 路由配置
-│   │   └── index.jsx
-│   └── utils/
-│       ├── helpers.js     # 通用工具函数
-│       └── validation.js  # 验证工具
-├── assets/
-└── database/
+│   │   ├── eventBus.ts        # 事件总线
+│   │   ├── GlobalState.tsx    # 全局状态上下文
+│   │   └── types.ts           # 公共类型定义
+│   ├── router/                # 路由配置
+│   │   └── index.tsx
+│   ├── utils/
+│   │   ├── helpers.ts        # 通用工具函数
+│   │   └── validation.ts     # 验证工具
+│   └── types/                # 全局类型定义
+│       └── global.d.ts        # 全局类型扩展
+│
+├── assets/                   # 静态资源
+├── database/                 # 数据库文件
+└── types/                    # 项目类型定义
+    └── vite-env.d.ts         # Vite 环境类型
 ```
 
 ## 🤝 参与贡献

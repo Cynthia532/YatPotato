@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YatPotato - 简约高效的番茄钟</title>
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary-color: #ff6347;
+            /* 番茄红 */
+            --secondary-color: #4a4a4a;
+            --background-color: #f8f8f8;
+            --card-color: #ffffff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-color);
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 99, 71, 0.1);
+        }
+
+        .active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* 主要内容区 */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        /* 名言显示 */
+        .quote {
+            font-size: 18px;
+            font-style: italic;
+            color: var(--secondary-color);
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--card-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+        }
+
+        /* 番茄计时器样式 */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 30px;
+            background-color: var(--card-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .timer-display {
+            font-size: 72px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .timer-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .timer-btn:hover {
+            transform: translateY(-2px);
+            background-color: #e55a40;
+        }
+
+        .timer-btn.secondary {
+            background-color: #f0f0f0;
+            color: var(--secondary-color);
+        }
+
+        .timer-btn.secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* 功能卡片容器 */
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--card-color);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        /* 任务列表样式 */
+        .task-list {
+            list-style-type: none;
+            margin-top: 10px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task-checkbox {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* 设置面板样式 */
+        .settings-container {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-color);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .settings-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .settings-button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        /* 锁屏模式样式 */
+        .lock-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lock-timer {
+            font-size: 80px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .lock-message {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .unlock-btn {
+            padding: 15px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* 报告页面样式 */
+        .reports-container {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .report-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .report-tab {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .report-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .report-content {
+            background-color: var(--card-color);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        /* 成就系统样式 */
+        .achievements-container {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card {
+            background-color: var(--card-color);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .achievement-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .achievement-progress {
+            width: 100%;
+            height: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 70%;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 60px;
+            }
+
+            .features-container {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="navbar">
+            <div class="logo">YatPotato</div>
+            <div class="nav-links">
+                <div class="nav-link active" onclick="showSection('main')">番茄计时</div>
+                <div class="nav-link" onclick="showSection('reports')">周报月报</div>
+                <div class="nav-link" onclick="showSection('achievements')">成就系统</div>
+                <div class="nav-link" onclick="showSection('settings')">设置</div>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="main-content">
+            <!-- 名言展示 -->
+            <div class="quote">
+                "今日事今日毕，不拖到明天。坚持专注当下的每一刻，成就更好的自己。"
+            </div>
+
+            <!-- 番茄计时器(主页面) -->
+            <div id="main-section">
+                <div class="timer-container">
+                    <div class="timer-display">25:00</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" onclick="toggleTimer()">开始</button>
+                        <button class="timer-btn secondary" onclick="resetTimer()">重置</button>
+                        <button class="timer-btn secondary" onclick="activateLockMode()">锁机模式</button>
+                    </div>
+                </div>
+
+                <!-- 功能卡片区域 -->
+                <div class="features-container">
+                    <!-- 任务清单卡片 -->
+                    <div class="feature-card">
+                        <div class="feature-title">任务清单</div>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" class="task-checkbox">
+                                <span>完成数学作业</span>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" class="task-checkbox">
+                                <span>准备英语演讲</span>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" class="task-checkbox">
+                                <span>阅读《思考，快与慢》</span>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" class="task-checkbox">
+                                <span>健身30分钟</span>
+                            </li>
+                        </ul>
+                        <button class="timer-btn secondary" style="margin-top: 15px; width: 100%;">添加任务</button>
+                    </div>
+
+                    <!-- 今日统计卡片 -->
+                    <div class="feature-card">
+                        <div class="feature-title">今日统计</div>
+                        <div style="margin: 15px 0;">
+                            <div>已完成番茄数：3</div>
+                            <div style="margin-top: 10px;">专注总时长：1小时15分钟</div>
+                            <div style="margin-top: 10px;">完成任务数：2/6</div>
+                        </div>
+                        <div style="margin-top: 20px; font-size: 14px; color: #888;">
+                            今日目标完成度：60%
+                        </div>
+                    </div>
+
+                    <!-- 快速操作卡片 -->
+                    <div class="feature-card">
+                        <div class="feature-title">快速操作</div>
+                        <button class="timer-btn secondary" style="width: 100%; margin-bottom: 10px;">短休息 (5分钟)</button>
+                        <button class="timer-btn secondary" style="width: 100%; margin-bottom: 10px;">长休息
+                            (15分钟)</button>
+                        <button class="timer-btn secondary" style="width: 100%;">自定义计时</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置界面 -->
+            <div id="settings-section" class="settings-container">
+                <div class="settings-title">设置</div>
+
+                <div class="settings-group">
+                    <label class="settings-label">番茄时长 (分钟)</label>
+                    <input type="number" class="settings-input" value="25" min="1" max="60">
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">短休息时长 (分钟)</label>
+                    <input type="number" class="settings-input" value="5" min="1" max="30">
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">长休息时长 (分钟)</label>
+                    <input type="number" class="settings-input" value="15" min="1" max="60">
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">连续番茄后长休息</label>
+                    <input type="number" class="settings-input" value="4" min="1" max="10">
+                </div>
+
+                <button class="settings-button" onclick="saveSettings()">保存设置</button>
+            </div>
+
+            <!-- 报告界面 -->
+            <div id="reports-section" class="reports-container">
+                <div class="reports-header">
+                    <h2 style="color: var(--primary-color);">学习报告</h2>
+                    <div class="report-tabs">
+                        <div class="report-tab active">周报</div>
+                        <div class="report-tab">月报</div>
+                    </div>
+                </div>
+
+                <div class="report-content">
+                    <h3>本周学习概况 (4月19日-4月25日)</h3>
+                    <div style="margin: 20px 0;">
+                        <div>总专注时长：12小时30分钟</div>
+                        <div style="margin-top: 10px;">完成番茄数：30个</div>
+                        <div style="margin-top: 10px;">完成任务数：18个</div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h4>每日学习时长</h4>
+                        <div
+                            style="height: 200px; background-color: #f8f8f8; margin-top: 15px; border-radius: 10px; display: flex; align-items: flex-end; padding: 20px; gap: 15px;">
+                            <!-- 模拟柱状图 -->
+                            <div
+                                style="height: 30%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                            <div
+                                style="height: 60%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                            <div
+                                style="height: 45%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                            <div
+                                style="height: 70%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                            <div
+                                style="height: 50%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                            <div
+                                style="height: 20%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                            <div
+                                style="height: 80%; width: 30px; background-color: var(--primary-color); border-radius: 5px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成就系统界面 -->
+            <div id="achievements-section" class="achievements-container">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">成就系统</h2>
+
+                <div class="achievements-grid">
+                    <div class="achievement-card">
+                        <div class="achievement-icon">🔥</div>
+                        <div class="achievement-title">持续专注</div>
+                        <div>连续使用7天</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" style="width: 70%;"></div>
+                        </div>
+                        <div style="margin-top: 5px; font-size: 12px;">5/7天</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon">⏱️</div>
+                        <div class="achievement-title">专注大师</div>
+                        <div>累计专注50小时</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" style="width: 45%;"></div>
+                        </div>
+                        <div style="margin-top: 5px; font-size: 12px;">22.5/50小时</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon">✅</div>
+                        <div class="achievement-title">任务达人</div>
+                        <div>完成100个任务</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" style="width: 35%;"></div>
+                        </div>
+                        <div style="margin-top: 5px; font-size: 12px;">35/100任务</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon">🍅</div>
+                        <div class="achievement-title">番茄收集者</div>
+                        <div>完成200个番茄</div>
+                        <div class="achievement-progress">
+                            <div class="progress-bar" style="width: 20%;"></div>
+                        </div>
+                        <div style="margin-top: 5px; font-size: 12px;">40/200番茄</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 锁机模式界面 -->
+    <div class="lock-screen" id="lock-screen">
+        <div class="lock-timer">25:00</div>
+        <div class="lock-message">专注进行中，请勿分心</div>
+        <button class="unlock-btn" onclick="deactivateLockMode()">解除锁机</button>
+    </div>
+
+    <script>
+        // 显示指定的部分
+        function showSection(section) {
+            // 隐藏所有部分
+            document.getElementById('main-section').style.display = 'none';
+            document.getElementById('settings-section').style.display = 'none';
+            document.getElementById('reports-section').style.display = 'none';
+            document.getElementById('achievements-section').style.display = 'none';
+
+            // 移除所有导航链接的active类
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // 显示选中的部分和设置对应导航链接为active
+            switch (section) {
+                case 'main':
+                    document.getElementById('main-section').style.display = 'block';
+                    navLinks[0].classList.add('active');
+                    break;
+                case 'settings':
+                    document.getElementById('settings-section').style.display = 'flex';
+                    navLinks[3].classList.add('active');
+                    break;
+                case 'reports':
+                    document.getElementById('reports-section').style.display = 'block';
+                    navLinks[1].classList.add('active');
+                    break;
+                case 'achievements':
+                    document.getElementById('achievements-section').style.display = 'block';
+                    navLinks[2].classList.add('active');
+                    break;
+            }
+        }
+
+        // 初始化页面，显示主页面
+        window.onload = function () {
+            showSection('main');
+        };
+
+        // 计时器功能
+        let timerRunning = false;
+        let timerInterval;
+
+        function toggleTimer() {
+            const timerBtn = document.querySelector('.timer-btn');
+
+            if (timerRunning) {
+                // 停止计时器
+                clearInterval(timerInterval);
+                timerRunning = false;
+                timerBtn.textContent = '开始';
+            } else {
+                // 开始计时器
+                timerRunning = true;
+                timerBtn.textContent = '暂停';
+
+                // 模拟计时
+                let minutes = 25;
+                let seconds = 0;
+
+                updateTimerDisplay(minutes, seconds);
+
+                timerInterval = setInterval(function () {
+                    if (seconds === 0) {
+                        if (minutes === 0) {
+                            // 计时结束
+                            clearInterval(timerInterval);
+                            timerRunning = false;
+                            timerBtn.textContent = '开始';
+                            return;
+                        }
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        seconds--;
+                    }
+
+                    updateTimerDisplay(minutes, seconds);
+                }, 1000);
+            }
+        }
+
+        function updateTimerDisplay(minutes, seconds) {
+            const timerDisplay = document.querySelector('.timer-display');
+            const lockTimerDisplay = document.querySelector('.lock-timer');
+
+            // 格式化时间为 MM:SS
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+            timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+            lockTimerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+        }
+
+        function resetTimer() {
+            // 清除计时器
+            clearInterval(timerInterval);
+            timerRunning = false;
+
+            // 重置显示
+            const timerDisplay = document.querySelector('.timer-display');
+            timerDisplay.textContent = '25:00';
+
+            // 重置按钮
+            const timerBtn = document.querySelector('.timer-btn');
+            timerBtn.textContent = '开始';
+        }
+
+        // 锁机模式功能
+        function activateLockMode() {
+            // 显示锁机界面
+            document.getElementById('lock-screen').style.display = 'flex';
+
+            // 如果计时器没有运行，自动开始计时
+            if (!timerRunning) {
+                toggleTimer();
+            }
+        }
+
+        function deactivateLockMode() {
+            // 隐藏锁机界面
+            document.getElementById('lock-screen').style.display = 'none';
+        }
+
+        // 保存设置
+        function saveSettings() {
+            // 模拟保存设置功能
+            alert('设置已保存！');
+            showSection('main');
+        }
+    </script>
+</body>
+
+</html>
