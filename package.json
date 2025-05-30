@@ -1,0 +1,46 @@
+{
+  "name": "yatpotato",
+  "version": "1.0.0",
+  "description": "[![Electron Version](https://img.shields.io/badge/Electron-24.0-blue)](https://www.electronjs.org/)\r [![React Version](https://img.shields.io/badge/React-18.2-blue)](https://react.dev/)\r [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)\r [![Code Size](https://img.shields.io/github/languages/code-size/ouyangyipeng/YatPotato)](https://github.com/ouyangyipeng/YatPotato)\r [![Top Language](https://img.shields.io/github/languages/top/ouyangyipeng/YatPotato)](https://github.com/ouyangyipeng/YatPotato)\r [![Last Commit](https://img.shields.io/github/last-commit/ouyangyipeng/YatPotato)](https://github.com/ouyangyipeng/YatPotato/commits/main)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm:react-start\" \"npm:electron-start\"",
+    "react-start": "react-scripts start",
+    "electron-start": "wait-on http://localhost:3000 && electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cynthia532/YatPotato.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "lodash": "^4.17.21",
+    "react-bootstrap": "^2.10.10"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^19.1.5",
+    "concurrently": "^9.1.2",
+    "eslint": "^8.57.1",
+    "react-scripts": "^5.0.1",
+    "wait-on": "^8.0.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
